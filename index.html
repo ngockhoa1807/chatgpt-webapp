@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Tạo Bài Tập Tự Động</title>
+  <style>
+    body { font-family: Arial; display: flex; flex-direction: column; align-items: center; padding: 30px; background: #f6f7fb; }
+    h1 { color: #c62828; margin-bottom: 20px; }
+    .btn-group { display: flex; gap: 10px; margin: 10px 0; }
+    button { padding: 10px 20px; border: 2px solid #c62828; background: white; border-radius: 8px; cursor: pointer; font-size: 16px; transition: 0.3s; }
+    button.active, button:hover { background: #c62828; color: white; }
+    input { padding: 8px; border: 1px solid #aaa; border-radius: 6px; width: 200px; text-align: center; }
+    #result { margin-top: 20px; background: white; padding: 20px; border-radius: 8px; width: 80%; min-height: 150px; border: 1px solid #ccc; }
+  </style>
+</head>
+<body>
+  <h1>Tạo Bài Tập Toán</h1>
+
+  <div class="btn-group" id="typeGroup">
+    <button data-value="tracnghiem">BT Trắc nghiệm</button>
+    <button data-value="tuluan">BT Tự luận</button>
+  </div>
+
+  <div class="btn-group" id="semesterGroup">
+    <button data-value="hki">HKI</button>
+    <button data-value="hkii">HKII</button>
+  </div>
+
+  <div class="btn-group" id="levelGroup">
+    <button data-value="nhanbiet">Nhận biết</button>
+    <button data-value="thonghieu">Thông hiểu</button>
+    <button data-value="vandung">Vận dụng</button>
+    <button data-value="vandungcao">Vận dụng cao</button>
+  </div>
+
+  <input type="number" id="numQuestions" placeholder="Số lượng câu hỏi" min="1" />
+
+  <button id="generateBtn">Tạo BT</button>
+  <div id="result">Kết quả sẽ hiển thị tại đây...</div>
+
+  <script>
+    let selections = { type: "", semester: "", level: "" };
+
+    document.querySelectorAll(".btn-group button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const group = btn.parentElement.id.replace("Group", "");
+        selections[group] = btn.dataset.value;
+        document.querySelectorAll(`#${btn.parentElement.id} button`).forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+      });
+    });
+
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const num = document.getElementById("numQuestions").value || 5;
+      const { type, semester, level } = selections;
+      if (!type || !semester || !level) return alert("Vui lòng chọn đủ 3 tùy chọn!");
+      document.getElementById("result").innerText = "Đang tạo bài tập...";
+
+      const response = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ type, semester, level, num })
+      });
+      const data = await response.json();
+      document.getElementById("result").innerText = data.result || "Không có kết quả!";
+    });
+  </script>
+</body>
+</html>
