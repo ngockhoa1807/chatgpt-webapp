@@ -1,0 +1,6 @@
+# Bỏ qua file chứa API key và các file môi trường
+config.js
+.env
+node_modules/
+dist/
+.DS_Store
