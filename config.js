@@ -1,1 +1,0 @@
-export const API_KEY = "YOUR_API_KEY_HERE"; // 🔑 Dán API key của bạn vào đây
