@@ -1,0 +1,14 @@
+{
+  "name": "chatgpt-webapp",
+  "version": "1.0.0",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "openai": "^4.0.0",
+    "cors": "^2.8.5"
+  }
+}
