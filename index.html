@@ -137,7 +137,7 @@
   </style>
 </head>
 <body>
-  <h1>Ứng dụng tạo bài tập xác suất - thống kê Toán THCS</h1>
+  <h1>Ứng dụng tạo bài tập Toán THCS</h1>
 
   <div class="mode-switch">
     <button id="basicBtn" class="active">Cơ bản</button>
@@ -150,8 +150,8 @@
       <div class="section">
         <h3>Loại bài tập</h3>
         <div class="btn-group" id="typeGroup">
-          <button class="option" data-type="tracnghiem" data-prompt="tạo bài tập trắc nghiệm 4 lựa chọn xác suất thống kê trung học cơ sở, chương trình GDPT 2018">BT Trắc nghiệm</button>
-          <button class="option" data-type="tuluan" data-prompt="tạo bài tập tự luận xác suất thống kê trung học cơ sở, chương trình GDPT 2018">BT Tự luận</button>
+          <button class="option" data-type="tracnghiem" data-prompt="tạo bài tập trắc nghiệm 4 lựa chọn">BT Trắc nghiệm</button>
+          <button class="option" data-type="tuluan" data-prompt="tạo bài tập tự luận">BT Tự luận</button>
         </div>
       </div>
 
@@ -184,57 +184,37 @@
     <!-- NÂNG CAO -->
     <div class="left-panel" id="advancedMode" style="display: none;">
       <div class="section">
-        <h3>Phần Xác suất</h3>
+        <h3>Phần Xác suất và Thống kê</h3>
         <h4>Trắc nghiệm</h4>
         <table class="adv-table">
           <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="xs_tn_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="xs_tn_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="xs_tn_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="xs_tn_vdc" value="0" min="0"></td></tr>
+          <tr><td>Nhận biết</td><td><input type="number" id="tn_nb" value="0" min="0"></td></tr>
+          <tr><td>Thông hiểu</td><td><input type="number" id="tn_th" value="0" min="0"></td></tr>
+          <tr><td>Vận dụng</td><td><input type="number" id="tn_vd" value="0" min="0"></td></tr>
+          <tr><td>Vận dụng cao</td><td><input type="number" id="tn_vdc" value="0" min="0"></td></tr>
         </table>
 
         <h4>Tự luận</h4>
         <table class="adv-table">
           <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="xs_tl_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="xs_tl_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="xs_tl_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="xs_tl_vdc" value="0" min="0"></td></tr>
-        </table>
-      </div>
-
-      <div class="section">
-        <h3>Phần Thống kê</h3>
-        <h4>Trắc nghiệm</h4>
-        <table class="adv-table">
-          <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="tk_tn_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="tk_tn_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="tk_tn_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="tk_tn_vdc" value="0" min="0"></td></tr>
-        </table>
-
-        <h4>Tự luận</h4>
-        <table class="adv-table">
-          <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="tk_tl_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="tk_tl_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="tk_tl_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="tk_tl_vdc" value="0" min="0"></td></tr>
+          <tr><td>Nhận biết</td><td><input type="number" id="tl_nb" value="0" min="0"></td></tr>
+          <tr><td>Thông hiểu</td><td><input type="number" id="tl_th" value="0" min="0"></td></tr>
+          <tr><td>Vận dụng</td><td><input type="number" id="tl_vd" value="0" min="0"></td></tr>
+          <tr><td>Vận dụng cao</td><td><input type="number" id="tl_vdc" value="0" min="0"></td></tr>
         </table>
       </div>
 
       <button class="generate-btn" id="generateAdvBtn">Tạo bài tập</button>
     </div>
 
-    <div class="right-panel" id="resultPanel">
+    <div class="right-panel">
       <h3>Kết quả bài tập</h3>
       <div id="result"></div>
     </div>
   </div>
 
   <script>
+    // ----- Chuyển chế độ -----
     const basicBtn = document.getElementById("basicBtn");
     const advancedBtn = document.getElementById("advancedBtn");
     const basicMode = document.getElementById("basicMode");
@@ -254,6 +234,7 @@
       basicMode.style.display = "none";
     };
 
+    // ----- Gán sự kiện chọn -----
     function toggleGroup(groupId) {
       document.querySelectorAll(`#${groupId} .option`).forEach(btn => {
         btn.addEventListener("click", () => {
@@ -266,7 +247,7 @@
     toggleGroup("semesterGroup");
     toggleGroup("levelGroup");
 
-    // CƠ BẢN
+    // ----- CƠ BẢN -----
     document.getElementById("generateBtn").addEventListener("click", async () => {
       const typeBtn = document.querySelector("#typeGroup .active");
       const semesterBtn = document.querySelector("#semesterGroup .active");
@@ -274,55 +255,59 @@
       const num = document.getElementById("numQuestions").value;
 
       if (!typeBtn || !semesterBtn || !levelBtn || !num || num <= 0) {
-        alert("Vui lòng chọn đầy đủ và nhập số lượng hợp lệ!");
+        alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
         return;
       }
 
-      const prompt = `${typeBtn.dataset.prompt}, ${semesterBtn.dataset.prompt}, ${levelBtn.dataset.prompt}, tạo ${num} câu hỏi.`;
-      document.getElementById("result").innerText = "Đang tạo bài tập...";
+      const basePrompt = "tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018";
+      const fullPrompt = `${basePrompt}, ${typeBtn.dataset.prompt}, ${semesterBtn.dataset.prompt}, ${levelBtn.dataset.prompt}, tạo ${num} câu hỏi.`;
 
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "custom", prompt })
-      });
-
-      const data = await res.json();
-      document.getElementById("result").innerText = data.result;
-    });
-
-    // NÂNG CAO
-    document.getElementById("generateAdvBtn").addEventListener("click", async () => {
-      const inputs = document.querySelectorAll("input[type='number']");
-      const data = {};
-      inputs.forEach(i => data[i.id] = i.value);
-
-      let prompts = [];
-      for (const key in data) {
-        const val = parseInt(data[key]);
-        if (val > 0) {
-          const type = key.includes("_tn_") ? "trắc nghiệm 4 lựa chọn" : "tự luận";
-          const part = key.includes("xs") ? "xác suất" : "thống kê";
-          const level = key.includes("_nb") ? "mức độ nhận biết"
-                      : key.includes("_th") ? "mức độ thông hiểu"
-                      : key.includes("_vd") ? "mức độ vận dụng"
-                      : "mức độ vận dụng cao";
-          prompts.push(`Tạo ${val} bài tập ${type} ${part} theo chương trình trung học cơ sở GDPT 2018, ${level}.`);
-        }
-      }
-
-      if (prompts.length === 0) {
-        alert("Vui lòng nhập ít nhất 1 giá trị khác 0!");
-        return;
-      }
-
-      const fullPrompt = prompts.join("\n") + "\nTrình bày kết quả theo mẫu:\nI. TRẮC NGHIỆM\nII. TỰ LUẬN\n*Đáp án, hướng dẫn làm bài";
       document.getElementById("result").innerText = "Đang tạo bài tập...";
 
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode: "custom", prompt: fullPrompt })
+      });
+      const data = await res.json();
+      document.getElementById("result").innerText = data.result;
+    });
+
+    // ----- NÂNG CAO -----
+    document.getElementById("generateAdvBtn").addEventListener("click", async () => {
+      const inputs = document.querySelectorAll("input[type='number']");
+      const data = {};
+      inputs.forEach(i => data[i.id] = i.value);
+
+      let prompts = [];
+      const basePrompt = "tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018";
+
+      for (const key in data) {
+        const val = parseInt(data[key]);
+        if (val > 0) {
+          const isTracNghiem = key.startsWith("tn");
+          const typeText = isTracNghiem ? "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018"
+                                        : "tạo bài tập tự luận, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018";
+          const level = key.endsWith("_nb") ? "mức độ nhận biết" :
+                        key.endsWith("_th") ? "mức độ thông hiểu" :
+                        key.endsWith("_vd") ? "mức độ vận dụng" : "mức độ vận dụng cao";
+          prompts.push(`${typeText}, ${level}, số lượng ${val} câu.`);
+        }
+      }
+
+      if (prompts.length === 0) {
+        alert("Vui lòng nhập ít nhất 1 số lượng khác 0!");
+        return;
+      }
+
+      const finalPrompt = `${basePrompt}\n${prompts.join("\n")}\nTrình bày kết quả theo mẫu:\nI. TRẮC NGHIỆM\nII. TỰ LUẬN\n*Đáp án, hướng dẫn làm bài`;
+
+      document.getElementById("result").innerText = "Đang tạo bài tập...";
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "custom", prompt: finalPrompt })
       });
 
       const dataRes = await res.json();
