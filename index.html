@@ -272,7 +272,41 @@
     <input type="number" id="numQuestions" value="1" min="1">
   </div>
 
-  
+  <script>
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const typeBtn = document.querySelector("#typeGroup .active");
+      const semesterBtn = document.querySelector("#semesterGroup .active");
+      const levelBtn = document.querySelector("#levelGroup .active");
+      const num = document.getElementById("numQuestions").value;
+
+      if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
+        alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
+        return;
+      }
+
+      // Gửi prompt kèm số lượng câu hỏi người dùng nhập
+      const fullPrompt = `
+      Tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018,
+      ${typeBtn.dataset.type === "tracnghiem" ? "tạo bài tập trắc nghiệm 4 lựa chọn"},
+      ${semesterBtn.dataset.semester === "hki" ? "Kiến thức học kỳ 1 lớp 9" :},
+      ${typeBtn.dataset.type === "tuluan" ? "tạo bài tập tự luận"},
+      ${semesterBtn.dataset.semester === "hkii" ? "Kiến thức học kỳ 2 lớp 9" :},
+      mức độ ${levelBtn.innerText.toLowerCase()},
+      với số lượng ${num} câu hỏi.
+      `;
+
+      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
+
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: "basic", prompt: fullPrompt })
+      });
+
+      const data = await res.json();
+      document.getElementById("result").innerText = data.result;
+    });
+  </script>
 </div>
       <!-- ===== NÂNG CAO ===== -->
       <div id="advancedMode" style="display:none;">
