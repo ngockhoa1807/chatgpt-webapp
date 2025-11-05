@@ -145,31 +145,31 @@
   </div>
 
   <div class="container">
+    <!-- CƠ BẢN -->
     <div class="left-panel" id="basicMode">
-      <!-- CƠ BẢN -->
       <div class="section">
         <h3>Loại bài tập</h3>
         <div class="btn-group" id="typeGroup">
-          <button class="option" data-type="tracnghiem">BT Trắc nghiệm</button>
-          <button class="option" data-type="tuluan">BT Tự luận</button>
+          <button class="option" data-type="tracnghiem" data-prompt="tạo bài tập trắc nghiệm 4 lựa chọn xác suất thống kê trung học cơ sở, chương trình GDPT 2018">BT Trắc nghiệm</button>
+          <button class="option" data-type="tuluan" data-prompt="tạo bài tập tự luận xác suất thống kê trung học cơ sở, chương trình GDPT 2018">BT Tự luận</button>
         </div>
       </div>
 
       <div class="section">
         <h3>Học kỳ</h3>
         <div class="btn-group" id="semesterGroup">
-          <button class="option" data-semester="hki">HKI</button>
-          <button class="option" data-semester="hkii">HKII</button>
+          <button class="option" data-semester="hki" data-prompt="Kiến thức học kỳ 1 lớp 9">HKI</button>
+          <button class="option" data-semester="hkii" data-prompt="Kiến thức học kỳ 2 lớp 9">HKII</button>
         </div>
       </div>
 
       <div class="section">
         <h3>Mức độ</h3>
         <div class="btn-group" id="levelGroup">
-          <button class="option" data-level="nhanbiet">Nhận biết</button>
-          <button class="option" data-level="thonghieu">Thông hiểu</button>
-          <button class="option" data-level="vandung">Vận dụng</button>
-          <button class="option" data-level="vandungcao">Vận dụng cao</button>
+          <button class="option" data-level="nhanbiet" data-prompt="mức độ nhận biết">Nhận biết</button>
+          <button class="option" data-level="thonghieu" data-prompt="mức độ thông hiểu">Thông hiểu</button>
+          <button class="option" data-level="vandung" data-prompt="mức độ vận dụng">Vận dụng</button>
+          <button class="option" data-level="vandungcao" data-prompt="mức độ vận dụng cao">Vận dụng cao</button>
         </div>
       </div>
 
@@ -235,7 +235,6 @@
   </div>
 
   <script>
-    // Chuyển chế độ
     const basicBtn = document.getElementById("basicBtn");
     const advancedBtn = document.getElementById("advancedBtn");
     const basicMode = document.getElementById("basicMode");
@@ -255,7 +254,6 @@
       basicMode.style.display = "none";
     };
 
-    // Chọn loại bài, học kỳ, mức độ
     function toggleGroup(groupId) {
       document.querySelectorAll(`#${groupId} .option`).forEach(btn => {
         btn.addEventListener("click", () => {
@@ -268,48 +266,63 @@
     toggleGroup("semesterGroup");
     toggleGroup("levelGroup");
 
-    // Gửi yêu cầu cơ bản
+    // CƠ BẢN
     document.getElementById("generateBtn").addEventListener("click", async () => {
-      const type = document.querySelector("#typeGroup .active")?.dataset.type;
-      const semester = document.querySelector("#semesterGroup .active")?.dataset.semester;
-      const level = document.querySelector("#levelGroup .active")?.dataset.level;
+      const typeBtn = document.querySelector("#typeGroup .active");
+      const semesterBtn = document.querySelector("#semesterGroup .active");
+      const levelBtn = document.querySelector("#levelGroup .active");
       const num = document.getElementById("numQuestions").value;
 
-      if (!type || !semester || !level || !num || num <= 0) {
-        alert("Vui lòng chọn đủ loại bài, học kỳ, mức độ và nhập số lượng câu hỏi!");
+      if (!typeBtn || !semesterBtn || !levelBtn || !num || num <= 0) {
+        alert("Vui lòng chọn đầy đủ và nhập số lượng hợp lệ!");
         return;
       }
 
-      const program = "môn Toán THCS (Chương trình Giáo dục Phổ thông 2018)";
-      const body = { mode: "basic", type, semester, level, num, program };
-
+      const prompt = `${typeBtn.dataset.prompt}, ${semesterBtn.dataset.prompt}, ${levelBtn.dataset.prompt}, tạo ${num} câu hỏi.`;
       document.getElementById("result").innerText = "Đang tạo bài tập...";
 
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ mode: "custom", prompt })
       });
 
       const data = await res.json();
       document.getElementById("result").innerText = data.result;
     });
 
-    // Gửi yêu cầu nâng cao
+    // NÂNG CAO
     document.getElementById("generateAdvBtn").addEventListener("click", async () => {
       const inputs = document.querySelectorAll("input[type='number']");
       const data = {};
       inputs.forEach(i => data[i.id] = i.value);
 
-      const program = "môn Toán THCS (Chương trình Giáo dục Phổ thông 2018)";
-      const body = { mode: "advanced", data, program };
+      let prompts = [];
+      for (const key in data) {
+        const val = parseInt(data[key]);
+        if (val > 0) {
+          const type = key.includes("_tn_") ? "trắc nghiệm 4 lựa chọn" : "tự luận";
+          const part = key.includes("xs") ? "xác suất" : "thống kê";
+          const level = key.includes("_nb") ? "mức độ nhận biết"
+                      : key.includes("_th") ? "mức độ thông hiểu"
+                      : key.includes("_vd") ? "mức độ vận dụng"
+                      : "mức độ vận dụng cao";
+          prompts.push(`Tạo ${val} bài tập ${type} ${part} theo chương trình trung học cơ sở GDPT 2018, ${level}.`);
+        }
+      }
 
+      if (prompts.length === 0) {
+        alert("Vui lòng nhập ít nhất 1 giá trị khác 0!");
+        return;
+      }
+
+      const fullPrompt = prompts.join("\n") + "\nTrình bày kết quả theo mẫu:\nI. TRẮC NGHIỆM\nII. TỰ LUẬN\n*Đáp án, hướng dẫn làm bài";
       document.getElementById("result").innerText = "Đang tạo bài tập...";
 
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body)
+        body: JSON.stringify({ mode: "custom", prompt: fullPrompt })
       });
 
       const dataRes = await res.json();
