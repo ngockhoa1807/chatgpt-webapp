@@ -1,317 +1,250 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tạo bài tập Toán THCS - Xác suất & Thống kê</title>
+  <meta charset="UTF-8">
+  <title>Tạo bài tập Xác suất - Thống kê</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
-      background-color: #f7f8fa;
+      background: #f7f8fa;
       margin: 0;
       padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
     }
-
+    .container {
+      max-width: 1100px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+    }
     h1 {
       text-align: center;
-      color: #333;
-      margin-top: 20px;
+      color: #c62828;
     }
-
-    .mode-switch {
-      margin: 15px 0;
-      display: flex;
-      gap: 15px;
-    }
-
-    .mode-switch button {
-      padding: 10px 20px;
-      border: 2px solid #0078d7;
-      background: white;
-      color: #0078d7;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-    }
-
-    .mode-switch button.active {
-      background: #0078d7;
-      color: white;
-    }
-
-    .container {
-      display: flex;
-      width: 90%;
-      max-width: 1200px;
-      gap: 20px;
-    }
-
-    .left-panel {
-      flex: 1;
-      background: white;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .right-panel {
-      flex: 2;
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
-      min-height: 400px;
-      overflow-y: auto;
-      white-space: pre-line;
-    }
-
-    .section {
+    .mode-toggle {
+      text-align: center;
       margin-bottom: 20px;
     }
-
-    .section h3 {
-      color: #0078d7;
-      margin-bottom: 10px;
-    }
-
-    .btn-group {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    button.option {
-      padding: 10px 16px;
-      border: 1px solid #ccc;
-      background: white;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    button.option.active {
-      background: #ff4d4d;
-      color: white;
-      border-color: #ff4d4d;
-    }
-
-    input[type="number"] {
-      width: 60px;
-      padding: 5px;
-      border: 1px solid #ccc;
-      border-radius: 4px;
-    }
-
-    .generate-btn {
-      background: #0078d7;
-      color: white;
+    .mode-toggle button {
       padding: 10px 20px;
       border: none;
-      border-radius: 6px;
+      margin: 5px;
+      background: #e0e0e0;
+      border-radius: 8px;
       cursor: pointer;
-      font-weight: bold;
-      width: 100%;
+      font-size: 15px;
     }
-
-    .generate-btn:hover {
-      background: #005bb5;
+    .mode-toggle button.active {
+      background: #c62828;
+      color: #fff;
     }
-
-    .adv-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-bottom: 15px;
+    .section {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 20px;
     }
-
-    .adv-table th, .adv-table td {
+    .btn-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .btn {
+      flex: 1;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      background: #fff;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn.active {
+      background: #c62828;
+      color: white;
+      border-color: #c62828;
+    }
+    .input-group {
+      margin-top: 15px;
+    }
+    input[type="number"] {
+      width: 80px;
+      padding: 5px;
+      margin: 5px;
+    }
+    #generateBtn {
+      display: block;
+      margin: 30px auto 10px auto;
+      background: #c62828;
+      color: white;
+      border: none;
+      padding: 12px 30px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    #result {
+      white-space: pre-wrap;
+      background: #fafafa;
+      border-radius: 6px;
       border: 1px solid #ddd;
-      padding: 6px;
-      text-align: center;
-    }
-
-    .adv-table th {
-      background-color: #f0f0f0;
+      padding: 15px;
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <h1>Ứng dụng tạo bài tập Toán THCS</h1>
-
-  <div class="mode-switch">
-    <button id="basicBtn" class="active">Cơ bản</button>
-    <button id="advancedBtn">Nâng cao</button>
-  </div>
-
   <div class="container">
-    <!-- CƠ BẢN -->
-    <div class="left-panel" id="basicMode">
+    <h1>Tạo bài tập Xác suất - Thống kê (THCS)</h1>
+
+    <div class="mode-toggle">
+      <button id="basicModeBtn" class="active">Cơ bản</button>
+      <button id="advancedModeBtn">Nâng cao</button>
+    </div>
+
+    <!-- =============== CƠ BẢN =============== -->
+    <div id="basicMode">
       <div class="section">
         <h3>Loại bài tập</h3>
-        <div class="btn-group" id="typeGroup">
-          <button class="option" data-type="tracnghiem" data-prompt="tạo bài tập trắc nghiệm 4 lựa chọn">BT Trắc nghiệm</button>
-          <button class="option" data-type="tuluan" data-prompt="tạo bài tập tự luận">BT Tự luận</button>
+        <div id="typeGroup" class="btn-group">
+          <button class="btn" data-type="tracnghiem">BT Trắc nghiệm</button>
+          <button class="btn" data-type="tuluan">BT Tự luận</button>
         </div>
       </div>
 
       <div class="section">
         <h3>Học kỳ</h3>
-        <div class="btn-group" id="semesterGroup">
-          <button class="option" data-semester="hki" data-prompt="Kiến thức học kỳ 1 lớp 9">HKI</button>
-          <button class="option" data-semester="hkii" data-prompt="Kiến thức học kỳ 2 lớp 9">HKII</button>
+        <div id="semesterGroup" class="btn-group">
+          <button class="btn" data-semester="hki">HKI</button>
+          <button class="btn" data-semester="hkii">HKII</button>
         </div>
       </div>
 
       <div class="section">
         <h3>Mức độ</h3>
-        <div class="btn-group" id="levelGroup">
-          <button class="option" data-level="nhanbiet" data-prompt="mức độ nhận biết">Nhận biết</button>
-          <button class="option" data-level="thonghieu" data-prompt="mức độ thông hiểu">Thông hiểu</button>
-          <button class="option" data-level="vandung" data-prompt="mức độ vận dụng">Vận dụng</button>
-          <button class="option" data-level="vandungcao" data-prompt="mức độ vận dụng cao">Vận dụng cao</button>
+        <div id="levelGroup" class="btn-group">
+          <button class="btn" data-level="nhanbiet">Nhận biết</button>
+          <button class="btn" data-level="thonghieu">Thông hiểu</button>
+          <button class="btn" data-level="vandung">Vận dụng</button>
+          <button class="btn" data-level="vandungcao">Vận dụng cao</button>
         </div>
       </div>
 
-      <div class="section">
-        <label>Nhập số lượng câu hỏi:</label>
-        <input type="number" id="numQuestions" min="1" placeholder="0" />
+      <div class="section input-group">
+        <label>Nhập số lượng câu hỏi: </label>
+        <input type="number" id="numQuestions" value="1" min="1">
       </div>
-
-      <button class="generate-btn" id="generateBtn">Tạo bài tập</button>
     </div>
 
-    <!-- NÂNG CAO -->
-    <div class="left-panel" id="advancedMode" style="display: none;">
+    <!-- =============== NÂNG CAO =============== -->
+    <div id="advancedMode" style="display:none;">
       <div class="section">
-        <h3>Phần Xác suất và Thống kê</h3>
+        <h3>Phần Xác suất & Thống kê</h3>
+
         <h4>Trắc nghiệm</h4>
-        <table class="adv-table">
-          <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="tn_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="tn_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="tn_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="tn_vdc" value="0" min="0"></td></tr>
-        </table>
+        <div>
+          Nhận biết: <input type="number" id="tn_nb" value="0" min="0">
+          Thông hiểu: <input type="number" id="tn_th" value="0" min="0">
+          Vận dụng: <input type="number" id="tn_vd" value="0" min="0">
+          Vận dụng cao: <input type="number" id="tn_vdc" value="0" min="0">
+        </div>
 
         <h4>Tự luận</h4>
-        <table class="adv-table">
-          <tr><th>Mức độ</th><th>Số câu</th></tr>
-          <tr><td>Nhận biết</td><td><input type="number" id="tl_nb" value="0" min="0"></td></tr>
-          <tr><td>Thông hiểu</td><td><input type="number" id="tl_th" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng</td><td><input type="number" id="tl_vd" value="0" min="0"></td></tr>
-          <tr><td>Vận dụng cao</td><td><input type="number" id="tl_vdc" value="0" min="0"></td></tr>
-        </table>
+        <div>
+          Nhận biết: <input type="number" id="tl_nb" value="0" min="0">
+          Thông hiểu: <input type="number" id="tl_th" value="0" min="0">
+          Vận dụng: <input type="number" id="tl_vd" value="0" min="0">
+          Vận dụng cao: <input type="number" id="tl_vdc" value="0" min="0">
+        </div>
       </div>
-
-      <button class="generate-btn" id="generateAdvBtn">Tạo bài tập</button>
     </div>
 
-    <div class="right-panel">
-      <h3>Kết quả bài tập</h3>
-      <div id="result"></div>
-    </div>
+    <button id="generateBtn">Tạo bài tập</button>
+    <div id="result"></div>
   </div>
 
-  <script>
-    // ----- Chuyển chế độ -----
-    const basicBtn = document.getElementById("basicBtn");
-    const advancedBtn = document.getElementById("advancedBtn");
+  <script type="module">
+    import { basePrompt, promptsBasic, promptsAdvanced } from './prompts.js';
+
+    const basicModeBtn = document.getElementById("basicModeBtn");
+    const advancedModeBtn = document.getElementById("advancedModeBtn");
     const basicMode = document.getElementById("basicMode");
     const advancedMode = document.getElementById("advancedMode");
 
-    basicBtn.onclick = () => {
-      basicBtn.classList.add("active");
-      advancedBtn.classList.remove("active");
+    basicModeBtn.addEventListener("click", () => {
+      basicModeBtn.classList.add("active");
+      advancedModeBtn.classList.remove("active");
       basicMode.style.display = "block";
       advancedMode.style.display = "none";
-    };
-
-    advancedBtn.onclick = () => {
-      advancedBtn.classList.add("active");
-      basicBtn.classList.remove("active");
-      advancedMode.style.display = "block";
-      basicMode.style.display = "none";
-    };
-
-    // ----- Gán sự kiện chọn -----
-    function toggleGroup(groupId) {
-      document.querySelectorAll(`#${groupId} .option`).forEach(btn => {
-        btn.addEventListener("click", () => {
-          document.querySelectorAll(`#${groupId} .option`).forEach(b => b.classList.remove("active"));
-          btn.classList.add("active");
-        });
-      });
-    }
-    toggleGroup("typeGroup");
-    toggleGroup("semesterGroup");
-    toggleGroup("levelGroup");
-
-    // ----- CƠ BẢN -----
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const typeBtn = document.querySelector("#typeGroup .active");
-      const semesterBtn = document.querySelector("#semesterGroup .active");
-      const levelBtn = document.querySelector("#levelGroup .active");
-      const num = document.getElementById("numQuestions").value;
-
-      if (!typeBtn || !semesterBtn || !levelBtn || !num || num <= 0) {
-        alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
-        return;
-      }
-
-      const basePrompt = "tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018";
-      const fullPrompt = `${basePrompt}, ${typeBtn.dataset.prompt}, ${semesterBtn.dataset.prompt}, ${levelBtn.dataset.prompt}, tạo ${num} câu hỏi.`;
-
-      document.getElementById("result").innerText = "Đang tạo bài tập...";
-
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "custom", prompt: fullPrompt })
-      });
-      const data = await res.json();
-      document.getElementById("result").innerText = data.result;
     });
 
-    // ----- NÂNG CAO -----
-    document.getElementById("generateAdvBtn").addEventListener("click", async () => {
-      const inputs = document.querySelectorAll("input[type='number']");
-      const data = {};
-      inputs.forEach(i => data[i.id] = i.value);
+    advancedModeBtn.addEventListener("click", () => {
+      advancedModeBtn.classList.add("active");
+      basicModeBtn.classList.remove("active");
+      basicMode.style.display = "none";
+      advancedMode.style.display = "block";
+    });
 
-      let prompts = [];
-      const basePrompt = "tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018";
+    // Chọn nút
+    document.querySelectorAll(".btn-group").forEach(group => {
+      group.addEventListener("click", e => {
+        if (e.target.classList.contains("btn")) {
+          group.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
+          e.target.classList.add("active");
+        }
+      });
+    });
 
-      for (const key in data) {
-        const val = parseInt(data[key]);
-        if (val > 0) {
-          const isTracNghiem = key.startsWith("tn");
-          const typeText = isTracNghiem ? "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018"
-                                        : "tạo bài tập tự luận, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018";
-          const level = key.endsWith("_nb") ? "mức độ nhận biết" :
-                        key.endsWith("_th") ? "mức độ thông hiểu" :
-                        key.endsWith("_vd") ? "mức độ vận dụng" : "mức độ vận dụng cao";
-          prompts.push(`${typeText}, ${level}, số lượng ${val} câu.`);
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      let mode = basicMode.style.display === "block" ? "basic" : "advanced";
+      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
+
+      let fullPrompt = basePrompt;
+
+      if (mode === "basic") {
+        const typeBtn = document.querySelector("#typeGroup .active");
+        const semesterBtn = document.querySelector("#semesterGroup .active");
+        const levelBtn = document.querySelector("#levelGroup .active");
+        const num = document.getElementById("numQuestions").value;
+
+        if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
+          alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
+          return;
+        }
+
+        fullPrompt += `, ${promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ${promptsBasic.levels[levelBtn.dataset.level]}, tạo ${num} câu hỏi.`;
+      } else {
+        fullPrompt += `, ${promptsAdvanced.format}\n`;
+
+        const tn = {
+          nb: document.getElementById("tn_nb").value,
+          th: document.getElementById("tn_th").value,
+          vd: document.getElementById("tn_vd").value,
+          vdc: document.getElementById("tn_vdc").value
+        };
+        const tl = {
+          nb: document.getElementById("tl_nb").value,
+          th: document.getElementById("tl_th").value,
+          vd: document.getElementById("tl_vd").value,
+          vdc: document.getElementById("tl_vdc").value
+        };
+
+        for (let [key, val] of Object.entries(tn)) {
+          if (val > 0)
+            fullPrompt += `\nTạo ${val} câu trắc nghiệm (${promptsBasic.levels[key]}) - ${promptsAdvanced.tracnghiem}.`;
+        }
+        for (let [key, val] of Object.entries(tl)) {
+          if (val > 0)
+            fullPrompt += `\nTạo ${val} câu tự luận (${promptsBasic.levels[key]}) - ${promptsAdvanced.tuluan}.`;
         }
       }
 
-      if (prompts.length === 0) {
-        alert("Vui lòng nhập ít nhất 1 số lượng khác 0!");
-        return;
-      }
-
-      const finalPrompt = `${basePrompt}\n${prompts.join("\n")}\nTrình bày kết quả theo mẫu:\nI. TRẮC NGHIỆM\nII. TỰ LUẬN\n*Đáp án, hướng dẫn làm bài`;
-
-      document.getElementById("result").innerText = "Đang tạo bài tập...";
-
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "custom", prompt: finalPrompt })
+        body: JSON.stringify({ mode, prompt: fullPrompt })
       });
-
-      const dataRes = await res.json();
-      document.getElementById("result").innerText = dataRes.result;
+      const data = await res.json();
+      document.getElementById("result").innerText = data.result;
     });
   </script>
 </body>
