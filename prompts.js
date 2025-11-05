@@ -1,16 +1,29 @@
 export const promptsBasic = {
-  type: {
-    tracnghiem: "Tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9",
-    tuluan: "Tạo bài tập tự luận, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9 có lời giải."
+  types: {
+  tracnghiem:
+    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018",
+  tuluan:
+    "tạo bài tập tự luận, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018"
   },
-  semester: {
-    hki: "Nội dung kiến thức học kỳ I lớp 9.",
-    hkii: "Nội dung kiến thức học kỳ II lớp 9."
+  semesters: {
+    hki: "Kiến thức học kỳ 1 lớp 9",
+    hkii: "Kiến thức học kỳ 2 lớp 9"
   },
-  level: {
-    nhanbiet: "Mức độ nhận biết .",
-    thonghieu: "Mức độ thông hiểu .",
-    vandung: "Mức độ vận dụng .",
-    vandungcao: "Mức độ vận dụng cao ."
+  levels: {
+    nhanbiet: "mức độ nhận biết",
+    thonghieu: "mức độ thông hiểu",
+    vandung: "mức độ vận dụng",
+    vandungcao: "mức độ vận dụng cao"
   }
+};
+
+export const promptsAdvanced = {
+  format: `Trình bày kết quả theo mẫu:
+I. TRẮC NGHIỆM
+II. TỰ LUẬN
+*Đáp án, hướng dẫn làm bài`,
+  tracnghiem:
+    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018",
+  tuluan:
+    "tạo bài tập tự luận, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018"
 };
