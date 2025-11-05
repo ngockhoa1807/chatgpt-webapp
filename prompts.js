@@ -1,19 +1,19 @@
 export const promptsBasic = {
   types: {
   tracnghiem:
-    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 chân trời sáng tạo",
+    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
   tuluan:
-    "tạo bài tập tự luận, nội dung xác suất thống kê lớp 9 chân trời sáng tạo kèm hướng dẫn và đáp án"
+    "tạo bài tập tự luận, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ kèm hướng dẫn và đáp án"
   },
   semesters: {
-    hki: "Kiến thức học kỳ 1 lớp 9",
-    hkii: "Kiến thức học kỳ 2 lớp 9"
+    hki: "Kiến thức học kỳ 1 lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
+    hkii: "Kiến thức học kỳ 2 lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ"
   },
   levels: {
-    nhanbiet: "mức độ nhận biết",
-    thonghieu: "mức độ thông hiểu",
-    vandung: "mức độ vận dụng",
-    vandungcao: "mức độ vận dụng cao"
+    nhanbiet: "mức độ nhận biết sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
+    thonghieu: "mức độ thông hiểu sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
+    vandung: "mức độ vận dụng sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
+    vandungcao: "mức độ vận dụng cao sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ"
   }
 };
 
@@ -23,7 +23,7 @@ I. TRẮC NGHIỆM
 II. TỰ LUẬN
 *Đáp án, hướng dẫn làm bài`,
   tracnghiem:
-    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 chân trời sáng tạo",
+    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
   tuluan:
-    "tạo bài tập tự luận, nội dung xác suất thống kê lớp 9 chân trời sáng tạo kèm hướng dẫn và đáp án"
+    "tạo bài tập tự luận, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ kèm hướng dẫn và đáp án"
 };
