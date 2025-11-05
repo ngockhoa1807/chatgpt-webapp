@@ -133,6 +133,19 @@
       background: #b71c1c;
     }
 
+    /* KHUNG HIỂN THỊ PROMPT */
+    #promptDisplay {
+      margin-top: 20px;
+      background: #fffbea;
+      border: 1px solid #f0e68c;
+      border-radius: 8px;
+      padding: 10px 15px;
+      font-size: 14px;
+      color: #555;
+      min-height: 80px;
+      white-space: pre-wrap;
+    }
+
     .right-panel {
       flex: 2;
       min-width: 400px;
@@ -309,6 +322,9 @@
       </div>
 
       <button id="generateBtn">Tạo bài tập</button>
+
+      <!-- KHUNG PROMPT -->
+      <div id="promptDisplay">🔍 Prompt hiện tại sẽ hiển thị ở đây...</div>
     </div>
 
     <!-- BÊN PHẢI -->
@@ -321,16 +337,19 @@
   <script type="module">
     import { promptsBasic, promptsAdvanced } from "./prompts.js";
 
+    const promptDisplay = document.getElementById("promptDisplay");
     const basicModeBtn = document.getElementById("basicModeBtn");
     const advancedModeBtn = document.getElementById("advancedModeBtn");
     const basicMode = document.getElementById("basicMode");
     const advancedMode = document.getElementById("advancedMode");
 
+    // ===== ĐỔI CHẾ ĐỘ =====
     basicModeBtn.addEventListener("click", () => {
       basicModeBtn.classList.add("active");
       advancedModeBtn.classList.remove("active");
       basicMode.style.display = "block";
       advancedMode.style.display = "none";
+      updatePromptPreview();
     });
 
     advancedModeBtn.addEventListener("click", () => {
@@ -338,22 +357,29 @@
       basicModeBtn.classList.remove("active");
       basicMode.style.display = "none";
       advancedMode.style.display = "block";
+      updatePromptPreview();
     });
 
+    // ===== CẬP NHẬT NÚT =====
     document.querySelectorAll(".btn-group").forEach((group) => {
       group.addEventListener("click", (e) => {
         if (e.target.classList.contains("btn")) {
           group.querySelectorAll(".btn").forEach((b) => b.classList.remove("active"));
           e.target.classList.add("active");
+          updatePromptPreview();
         }
       });
     });
 
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
-      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
+    // ===== LẮNG NGHE INPUT =====
+    document.querySelectorAll("input").forEach((input) => {
+      input.addEventListener("input", updatePromptPreview);
+    });
 
-      let fullPrompt = "";
+    // ===== HÀM CẬP NHẬT PROMPT HIỂN THỊ =====
+    function updatePromptPreview() {
+      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
+      let preview = "";
 
       if (mode === "basic") {
         const typeBtn = document.querySelector("#typeGroup .active");
@@ -361,38 +387,41 @@
         const levelBtn = document.querySelector("#levelGroup .active");
         const num = document.getElementById("numQuestions").value;
 
-        if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
-          alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
-          return;
+        if (typeBtn && semesterBtn && levelBtn) {
+          preview = `${promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ${promptsBasic.levels[levelBtn.dataset.level]}, tạo ${num} câu hỏi.`;
+        } else {
+          preview = "⚠️ Vui lòng chọn đủ thông tin để hiển thị prompt.";
         }
-
-        fullPrompt = `${promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ${promptsBasic.levels[levelBtn.dataset.level]}, tạo ${num} câu hỏi.`;
       } else {
-        fullPrompt = `${promptsAdvanced.format}\n`;
+        preview = promptsAdvanced.format + "\n";
+        const tn = ["nb", "th", "vd", "vdc"].map(k => ({
+          key: k,
+          val: document.getElementById(`tn_${k}`).value
+        }));
+        const tl = ["nb", "th", "vd", "vdc"].map(k => ({
+          key: k,
+          val: document.getElementById(`tl_${k}`).value
+        }));
 
-        const tn = {
-          nb: document.getElementById("tn_nb").value,
-          th: document.getElementById("tn_th").value,
-          vd: document.getElementById("tn_vd").value,
-          vdc: document.getElementById("tn_vdc").value,
-        };
-        const tl = {
-          nb: document.getElementById("tl_nb").value,
-          th: document.getElementById("tl_th").value,
-          vd: document.getElementById("tl_vd").value,
-          vdc: document.getElementById("tl_vdc").value,
-        };
-
-        for (let [key, val] of Object.entries(tn)) {
+        tn.forEach(({ key, val }) => {
           if (val > 0)
-            fullPrompt += `\nTạo ${val} câu trắc nghiệm (${promptsBasic.levels[key]}) - ${promptsAdvanced.tracnghiem}.`;
-        }
-        for (let [key, val] of Object.entries(tl)) {
+            preview += `Tạo ${val} câu trắc nghiệm (${promptsBasic.levels[key]}) - ${promptsAdvanced.tracnghiem}\n`;
+        });
+        tl.forEach(({ key, val }) => {
           if (val > 0)
-            fullPrompt += `\nTạo ${val} câu tự luận (${promptsBasic.levels[key]}) - ${promptsAdvanced.tuluan}.`;
-        }
+            preview += `Tạo ${val} câu tự luận (${promptsBasic.levels[key]}) - ${promptsAdvanced.tuluan}\n`;
+        });
       }
 
+      promptDisplay.innerText = preview.trim() || "🔍 Prompt hiện tại sẽ hiển thị ở đây...";
+    }
+
+    // ===== NÚT TẠO BÀI =====
+    document.getElementById("generateBtn").addEventListener("click", async () => {
+      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
+      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
+
+      const fullPrompt = promptDisplay.innerText;
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -402,6 +431,9 @@
       const data = await res.json();
       document.getElementById("result").innerText = data.result;
     });
+
+    // Khởi tạo prompt ban đầu
+    updatePromptPreview();
   </script>
 </body>
 </html>
