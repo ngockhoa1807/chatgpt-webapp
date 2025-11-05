@@ -24,7 +24,6 @@
       overflow: hidden;
     }
 
-    /* ===== PANEL TRÁI ===== */
     .left-panel {
       flex: 1;
       min-width: 350px;
@@ -107,7 +106,7 @@
     }
 
     input[type="number"] {
-      width: 80px;
+      width: 70px;
       padding: 5px;
       margin: 5px;
       border: 1px solid #ccc;
@@ -134,7 +133,6 @@
       background: #b71c1c;
     }
 
-    /* ===== PANEL PHẢI ===== */
     .right-panel {
       flex: 2;
       min-width: 400px;
@@ -159,6 +157,46 @@
       line-height: 1.6;
     }
 
+    .box {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-top: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .box h4 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #c62828;
+      font-weight: 600;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .level-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    .level-table th {
+      background: #f2f2f2;
+      color: #333;
+      font-weight: 500;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .level-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
     @media (max-width: 900px) {
       .container {
         flex-direction: column;
@@ -173,11 +211,10 @@
 
 <body>
   <div class="container">
-    <!-- ===== BÊN TRÁI ===== -->
+    <!-- PANEL TRÁI -->
     <div class="left-panel">
       <h1>Tạo bài tập Xác suất - Thống kê (THCS lớp 9)</h1>
 
-      <!-- CHẾ ĐỘ -->
       <div class="mode-toggle">
         <button id="basicModeBtn" class="active">Cơ bản</button>
         <button id="advancedModeBtn">Nâng cao</button>
@@ -219,45 +256,80 @@
 
       <!-- ===== NÂNG CAO ===== -->
       <div id="advancedMode" style="display:none;">
-        <p style="color:#888;">(Phần nâng cao sẽ được cập nhật sau)</p>
+        <div class="section">
+          <h3>Phần Xác suất & Thống kê</h3>
+
+          <div class="box">
+            <h4>Trắc nghiệm</h4>
+            <table class="level-table">
+              <tr><th>Nhận biết</th><th>Thông hiểu</th></tr>
+              <tr>
+                <td><input type="number" id="tn_nb" value="0" min="0"></td>
+                <td><input type="number" id="tn_th" value="0" min="0"></td>
+              </tr>
+              <tr><th>Vận dụng</th><th>Vận dụng cao</th></tr>
+              <tr>
+                <td><input type="number" id="tn_vd" value="0" min="0"></td>
+                <td><input type="number" id="tn_vdc" value="0" min="0"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="box">
+            <h4>Tự luận</h4>
+            <table class="level-table">
+              <tr><th>Nhận biết</th><th>Thông hiểu</th></tr>
+              <tr>
+                <td><input type="number" id="tl_nb" value="0" min="0"></td>
+                <td><input type="number" id="tl_th" value="0" min="0"></td>
+              </tr>
+              <tr><th>Vận dụng</th><th>Vận dụng cao</th></tr>
+              <tr>
+                <td><input type="number" id="tl_vd" value="0" min="0"></td>
+                <td><input type="number" id="tl_vdc" value="0" min="0"></td>
+              </tr>
+            </table>
+          </div>
+        </div>
       </div>
 
       <button id="generateBtn">Tạo bài tập</button>
     </div>
 
-    <!-- ===== BÊN PHẢI ===== -->
+    <!-- PANEL PHẢI -->
     <div class="right-panel">
       <h2>Kết quả</h2>
       <div id="result">Chưa có kết quả...</div>
     </div>
   </div>
 
-  <!-- ===== SCRIPT ===== -->
   <script type="module">
-    import { promptsBasic } from './prompts.js';
+    import { basePrompt, promptsBasic, promptsAdvanced } from './prompts.js';
 
-    const basicModeBtn = document.getElementById("basicModeBtn");
-    const advancedModeBtn = document.getElementById("advancedModeBtn");
-    const basicMode = document.getElementById("basicMode");
-    const advancedMode = document.getElementById("advancedMode");
-    const resultDiv = document.getElementById("result");
+    const modeBtns = {
+      basic: document.getElementById("basicModeBtn"),
+      advanced: document.getElementById("advancedModeBtn")
+    };
+    const modes = {
+      basic: document.getElementById("basicMode"),
+      advanced: document.getElementById("advancedMode")
+    };
 
-    // === Chuyển chế độ ===
-    basicModeBtn.addEventListener("click", () => {
-      basicModeBtn.classList.add("active");
-      advancedModeBtn.classList.remove("active");
-      basicMode.style.display = "block";
-      advancedMode.style.display = "none";
+    // 🔹 Chuyển đổi chế độ
+    modeBtns.basic.addEventListener("click", () => {
+      modeBtns.basic.classList.add("active");
+      modeBtns.advanced.classList.remove("active");
+      modes.basic.style.display = "block";
+      modes.advanced.style.display = "none";
+    });
+    modeBtns.advanced.addEventListener("click", () => {
+      modeBtns.advanced.classList.add("active");
+      modeBtns.basic.classList.remove("active");
+      modes.basic.style.display = "none";
+      modes.advanced.style.display = "block";
     });
 
-    advancedModeBtn.addEventListener("click", () => {
-      advancedModeBtn.classList.add("active");
-      basicModeBtn.classList.remove("active");
-      basicMode.style.display = "none";
-      advancedMode.style.display = "block";
-    });
-
-    // === Chọn nút nhóm ===
+    // 🔹 Chọn nút
     document.querySelectorAll(".btn-group").forEach(group => {
       group.addEventListener("click", e => {
         if (e.target.classList.contains("btn")) {
@@ -267,46 +339,53 @@
       });
     });
 
-    // === Khi nhấn "Tạo bài tập" ===
+    // 🔹 Nút tạo bài tập
     document.getElementById("generateBtn").addEventListener("click", async () => {
-      const typeBtn = document.querySelector("#typeGroup .active");
-      const semesterBtn = document.querySelector("#semesterGroup .active");
-      const levelBtn = document.querySelector("#levelGroup .active");
-      const num = document.getElementById("numQuestions").value;
+      const resultBox = document.getElementById("result");
+      resultBox.innerText = "⏳ Đang tạo bài tập...";
 
-      if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
-        alert("⚠️ Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
-        return;
+      const isBasic = modes.basic.style.display === "block";
+      let fullPrompt = basePrompt;
+
+      if (isBasic) {
+        const type = document.querySelector("#typeGroup .active")?.dataset.type;
+        const semester = document.querySelector("#semesterGroup .active")?.dataset.semester;
+        const level = document.querySelector("#levelGroup .active")?.dataset.level;
+        const num = document.getElementById("numQuestions").value;
+
+        if (!type || !semester || !level || num <= 0) {
+          alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
+          return;
+        }
+
+        // 🔹 Ghép prompt từ file
+        fullPrompt = `${basePrompt}
+${promptsBasic.types[type]}
+${promptsBasic.semesters[semester]}
+${promptsBasic.levels[level]}
+Tạo ${num} câu hỏi.`;
+      } else {
+        // 🔹 Logic nâng cao giữ nguyên
+        fullPrompt += `, ${promptsAdvanced.format}\n`;
+
+        const tn = { nb: tn_nb.value, th: tn_th.value, vd: tn_vd.value, vdc: tn_vdc.value };
+        const tl = { nb: tl_nb.value, th: tl_th.value, vd: tl_vd.value, vdc: tl_vdc.value };
+
+        for (let [k, v] of Object.entries(tn)) if (v > 0)
+          fullPrompt += `\nTạo ${v} câu trắc nghiệm (${promptsBasic.levels[k]}) - ${promptsAdvanced.tracnghiem}.`;
+        for (let [k, v] of Object.entries(tl)) if (v > 0)
+          fullPrompt += `\nTạo ${v} câu tự luận (${promptsBasic.levels[k]}) - ${promptsAdvanced.tuluan}.`;
       }
 
-      // === Lấy prompt tương ứng ===
-      const typePrompt = promptsBasic.type[typeBtn.dataset.type];
-      const semesterPrompt = promptsBasic.semester[semesterBtn.dataset.semester];
-      const levelPrompt = promptsBasic.level[levelBtn.dataset.level];
+      // 🔹 Gửi yêu cầu
+      const res = await fetch("/generate", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode: isBasic ? "basic" : "advanced", prompt: fullPrompt })
+      });
 
-      // === Ghép toàn bộ prompt ===
-      const fullPrompt = `
-${typePrompt}
-${semesterPrompt}
-${levelPrompt}
-Với số lượng ${num} câu hỏi.
-`;
-
-      resultDiv.innerText = "⏳ Đang tạo bài tập...";
-
-      // === Gửi prompt đến API ===
-      try {
-        const res = await fetch("/generate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mode: "basic", prompt: fullPrompt })
-        });
-
-        const data = await res.json();
-        resultDiv.innerText = data.result;
-      } catch (err) {
-        resultDiv.innerText = "❌ Lỗi khi tạo bài tập. Vui lòng thử lại.";
-      }
+      const data = await res.json();
+      resultBox.innerText = data.result;
     });
   </script>
 </body>
