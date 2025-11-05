@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tạo Bài Tập Toán</title>
+  <title>Tạo Bài Tập Toán THCS</title>
   <style>
     :root {
       --main: #c62828;
@@ -155,7 +155,7 @@
   <div class="container">
     <!-- PANEL TRÁI -->
     <div class="panel left-panel">
-      <h1>Tạo Bài Tập Toán</h1>
+      <h1>Tạo Bài Tập Toán THCS</h1>
 
       <div class="mode-select">
         <button id="basicBtn" class="active">Cơ bản</button>
@@ -167,4 +167,182 @@
         <div class="section">
           <h3>Loại bài tập</h3>
           <div class="btn-group" id="typeGroup">
-            <bu
+            <button data-value="tracnghiem">BT Trắc nghiệm</button>
+            <button data-value="tuluan">BT Tự luận</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Học kỳ</h3>
+          <div class="btn-group" id="semesterGroup">
+            <button data-value="hki">HKI</button>
+            <button data-value="hkii">HKII</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Mức độ</h3>
+          <div class="btn-group" id="levelGroup">
+            <button data-value="nhanbiet">Nhận biết</button>
+            <button data-value="thonghieu">Thông hiểu</button>
+            <button data-value="vandung">Vận dụng</button>
+            <button data-value="vandungcao">Vận dụng cao</button>
+          </div>
+        </div>
+
+        <div class="section">
+          <h3>Số lượng câu hỏi</h3>
+          <input type="number" id="numQuestions" min="1" placeholder="Nhập số lượng (≥1)" />
+        </div>
+      </div>
+
+      <!-- NÂNG CAO -->
+      <div id="advancedMode" class="hidden">
+        <h3>Phần Xác suất</h3>
+        <table>
+          <tr><th colspan="8">Tự luận</th></tr>
+          <tr>
+            <td>Nhận biết</td><td><input type="number" id="xs_tl_nb" min="0" value="0" /></td>
+            <td>Thông hiểu</td><td><input type="number" id="xs_tl_th" min="0" value="0" /></td>
+            <td>Vận dụng</td><td><input type="number" id="xs_tl_vd" min="0" value="0" /></td>
+            <td>Vận dụng cao</td><td><input type="number" id="xs_tl_vdc" min="0" value="0" /></td>
+          </tr>
+          <tr><th colspan="8">Trắc nghiệm</th></tr>
+          <tr>
+            <td>Nhận biết</td><td><input type="number" id="xs_tn_nb" min="0" value="0" /></td>
+            <td>Thông hiểu</td><td><input type="number" id="xs_tn_th" min="0" value="0" /></td>
+            <td>Vận dụng</td><td><input type="number" id="xs_tn_vd" min="0" value="0" /></td>
+            <td>Vận dụng cao</td><td><input type="number" id="xs_tn_vdc" min="0" value="0" /></td>
+          </tr>
+        </table>
+
+        <h3>Phần Thống kê</h3>
+        <table>
+          <tr><th colspan="8">Tự luận</th></tr>
+          <tr>
+            <td>Nhận biết</td><td><input type="number" id="tk_tl_nb" min="0" value="0" /></td>
+            <td>Thông hiểu</td><td><input type="number" id="tk_tl_th" min="0" value="0" /></td>
+            <td>Vận dụng</td><td><input type="number" id="tk_tl_vd" min="0" value="0" /></td>
+            <td>Vận dụng cao</td><td><input type="number" id="tk_tl_vdc" min="0" value="0" /></td>
+          </tr>
+          <tr><th colspan="8">Trắc nghiệm</th></tr>
+          <tr>
+            <td>Nhận biết</td><td><input type="number" id="tk_tn_nb" min="0" value="0" /></td>
+            <td>Thông hiểu</td><td><input type="number" id="tk_tn_th" min="0" value="0" /></td>
+            <td>Vận dụng</td><td><input type="number" id="tk_tn_vd" min="0" value="0" /></td>
+            <td>Vận dụng cao</td><td><input type="number" id="tk_tn_vdc" min="0" value="0" /></td>
+          </tr>
+        </table>
+      </div>
+
+      <button id="generateBtn" disabled>Tạo Bài Tập</button>
+    </div>
+
+    <!-- PANEL PHẢI -->
+    <div class="panel right-panel" id="result">
+      Kết quả sẽ hiển thị tại đây...
+    </div>
+  </div>
+
+  <script>
+    const basicBtn = document.getElementById("basicBtn");
+    const advancedBtn = document.getElementById("advancedBtn");
+    const basicMode = document.getElementById("basicMode");
+    const advancedMode = document.getElementById("advancedMode");
+    const generateBtn = document.getElementById("generateBtn");
+    const resultDiv = document.getElementById("result");
+
+    let mode = "basic";
+    let selections = { type: "", semester: "", level: "" };
+
+    // Chuyển chế độ
+    basicBtn.addEventListener("click", () => {
+      mode = "basic";
+      basicBtn.classList.add("active");
+      advancedBtn.classList.remove("active");
+      basicMode.classList.remove("hidden");
+      advancedMode.classList.add("hidden");
+      updateButtonState();
+    });
+
+    advancedBtn.addEventListener("click", () => {
+      mode = "advanced";
+      advancedBtn.classList.add("active");
+      basicBtn.classList.remove("active");
+      advancedMode.classList.remove("hidden");
+      basicMode.classList.add("hidden");
+      updateButtonState();
+    });
+
+    // Cập nhật trạng thái nút trong chế độ cơ bản
+    document.querySelectorAll(".btn-group button").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const group = btn.parentElement.id.replace("Group", "");
+        selections[group] = btn.dataset.value;
+        document.querySelectorAll(`#${btn.parentElement.id} button`).forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        updateButtonState();
+      });
+    });
+
+    // Kiểm tra điều kiện kích hoạt nút
+    document.querySelectorAll("input[type='number']").forEach(i => {
+      i.addEventListener("input", updateButtonState);
+    });
+
+    function updateButtonState() {
+      let valid = false;
+
+      if (mode === "basic") {
+        const num = parseInt(document.getElementById("numQuestions").value);
+        valid = selections.type && selections.semester && selections.level && num > 0;
+      } else {
+        const inputs = document.querySelectorAll("#advancedMode input[type='number']");
+        valid = Array.from(inputs).some(i => parseInt(i.value) > 0);
+      }
+
+      if (valid) {
+        generateBtn.disabled = false;
+        generateBtn.classList.add("enabled");
+      } else {
+        generateBtn.disabled = true;
+        generateBtn.classList.remove("enabled");
+      }
+    }
+
+    generateBtn.addEventListener("click", async () => {
+      resultDiv.innerText = "⏳ Đang tạo bài tập...";
+
+      let payload = {};
+
+      if (mode === "basic") {
+        payload = {
+          mode,
+          type: selections.type,
+          semester: selections.semester,
+          level: selections.level,
+          num: document.getElementById("numQuestions").value,
+          program: "môn Toán THCS (Chương trình Giáo dục Phổ thông 2018)"
+        };
+      } else {
+        const inputs = document.querySelectorAll("#advancedMode input[type='number']");
+        let data = {};
+        inputs.forEach(i => data[i.id] = i.value);
+        payload = { mode, data, program: "môn Toán THCS (Chương trình Giáo dục Phổ thông 2018)" };
+      }
+
+      try {
+        const res = await fetch("/generate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload)
+        });
+        const json = await res.json();
+        resultDiv.innerText = json.result || "Không có kết quả!";
+      } catch {
+        resultDiv.innerText = "❌ Lỗi khi gọi API!";
+      }
+    });
+  </script>
+</body>
+</html>
