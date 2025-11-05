@@ -287,8 +287,10 @@
       // Gửi prompt kèm số lượng câu hỏi người dùng nhập
       const fullPrompt = `
       Tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018,
-      ${typeBtn.dataset.type === "tracnghiem" ? "tạo bài tập trắc nghiệm 4 lựa chọn" : "tạo bài tập tự luận"},
-      ${semesterBtn.dataset.semester === "hki" ? "Kiến thức học kỳ 1 lớp 9" : "Kiến thức học kỳ 2 lớp 9"},
+      ${typeBtn.dataset.type === "tracnghiem" ? "tạo bài tập trắc nghiệm 4 lựa chọn"},
+      ${semesterBtn.dataset.semester === "hki" ? "Kiến thức học kỳ 1 lớp 9" :},
+      ${typeBtn.dataset.type === "tuluan" ? "tạo bài tập tự luận"},
+      ${semesterBtn.dataset.semester === "hkii" ? "Kiến thức học kỳ 2 lớp 9" :},
       mức độ ${levelBtn.innerText.toLowerCase()},
       với số lượng ${num} câu hỏi.
       `;
