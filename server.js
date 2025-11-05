@@ -13,8 +13,10 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // route trả về giao diện chính
+app.use(express.static(__dirname));
+
 app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "index.html"));
 });
 
 // ============= API xử lý tạo bài tập =============
