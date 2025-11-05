@@ -1,7 +1,7 @@
 export const promptsBasic = {
   types: {
-    tracnghiem: "Tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9",
-    tuluan: "Tạo bài tập tự luận, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9"
+    tracnghiem1: "Tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9",
+    tuluan1: "Tạo bài tập tự luận, nội dung xác suất thống kê trung học cơ sở trong chương trình GDPT 2018 phần Xác suất - Thống kê lớp 9"
   },
   semesters: {
     hki: "thuộc chương trình học kỳ I",
