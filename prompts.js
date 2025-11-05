@@ -22,8 +22,8 @@ export const promptsAdvanced = {
 I. TRẮC NGHIỆM
 II. TỰ LUẬN
 *Đáp án, hướng dẫn làm bài`,
-  tracnghiem:
+  tracnghiem2:
     "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018",
-  tuluan:
+  tuluan2:
     "tạo bài tập tự luận, nội dung xác suất thống kê theo chương trình trung học cơ sở GDPT 2018"
 };
