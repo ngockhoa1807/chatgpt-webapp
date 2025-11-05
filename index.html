@@ -272,7 +272,10 @@
     <input type="number" id="numQuestions" value="1" min="1">
   </div>
 
-  <script>
+  <!-- Sử dụng ES Module để import prompt từ file prompt.ts -->
+  <script type="module">
+    import { basePrompt } from './prompt.ts';
+
     document.getElementById("generateBtn").addEventListener("click", async () => {
       const typeBtn = document.querySelector("#typeGroup .active");
       const semesterBtn = document.querySelector("#semesterGroup .active");
@@ -284,11 +287,7 @@
         return;
       }
 
-      // 🔹 Đọc prompt gốc từ file bên ngoài (ví dụ: /prompts/prompt.txt)
-      const promptFile = await fetch("/prompts/prompt.txt");
-      const basePrompt = await promptFile.text();
-
-      // 🔹 Ghép prompt từ file với thông tin người dùng chọn
+      // Ghép prompt từ file prompt.ts với thông tin người dùng chọn
       const fullPrompt = `
       ${basePrompt}
       Loại bài tập: ${typeBtn.innerText}
@@ -310,6 +309,7 @@
     });
   </script>
 </div>
+
 
       <!-- ===== NÂNG CAO ===== -->
       <div id="advancedMode" style="display:none;">
