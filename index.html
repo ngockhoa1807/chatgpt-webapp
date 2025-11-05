@@ -230,7 +230,7 @@
 
 <body>
   <div class="container">
-    <!-- BÊN TRÁI -->
+    <!-- PANEL TRÁI -->
     <div class="left-panel">
       <h1>Tạo bài tập Xác suất - Thống kê (THCS lớp 9)</h1>
 
@@ -239,7 +239,7 @@
         <button id="advancedModeBtn">Nâng cao</button>
       </div>
 
-      <!-- ===== CƠ BẢN ===== -->
+      <!-- ====== CƠ BẢN ====== -->
       <div id="basicMode">
         <div class="section">
           <h3>Loại bài tập</h3>
@@ -273,11 +273,10 @@
         </div>
       </div>
 
-      <!-- ===== NÂNG CAO ===== -->
+      <!-- ====== NÂNG CAO ====== -->
       <div id="advancedMode" style="display:none;">
         <div class="section">
           <h3>Phần Xác suất & Thống kê</h3>
-
           <div class="box">
             <h4>Trắc nghiệm</h4>
             <table class="level-table">
@@ -315,7 +314,7 @@
       <button id="generateBtn">Tạo bài tập</button>
     </div>
 
-    <!-- BÊN PHẢI -->
+    <!-- PANEL PHẢI -->
     <div class="right-panel">
       <h2>Kết quả</h2>
       <div id="result">Chưa có kết quả...</div>
@@ -323,13 +322,14 @@
   </div>
 
   <script type="module">
-    import { basePrompt, promptsBasic, promptsAdvanced } from './prompts.js';
+    import { promptsBasic, promptsAdvanced } from './prompts.js';
 
     const basicModeBtn = document.getElementById("basicModeBtn");
     const advancedModeBtn = document.getElementById("advancedModeBtn");
     const basicMode = document.getElementById("basicMode");
     const advancedMode = document.getElementById("advancedMode");
 
+    // ====== CHUYỂN GIỮA CÁC CHẾ ĐỘ ======
     basicModeBtn.addEventListener("click", () => {
       basicModeBtn.classList.add("active");
       advancedModeBtn.classList.remove("active");
@@ -344,6 +344,7 @@
       advancedMode.style.display = "block";
     });
 
+    // ====== KÍCH HOẠT NÚT ======
     document.querySelectorAll(".btn-group").forEach(group => {
       group.addEventListener("click", e => {
         if (e.target.classList.contains("btn")) {
@@ -353,11 +354,12 @@
       });
     });
 
+    // ====== XỬ LÝ KHI NHẤN "TẠO BÀI TẬP" ======
     document.getElementById("generateBtn").addEventListener("click", async () => {
-      let mode = basicMode.style.display === "block" ? "basic" : "advanced";
+      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
       document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
 
-      let fullPrompt = basePrompt;
+      let fullPrompt = "";
 
       if (mode === "basic") {
         const typeBtn = document.querySelector("#typeGroup .active");
@@ -367,12 +369,20 @@
 
         if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
           alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
+          document.getElementById("result").innerText = "⚠️ Thiếu thông tin!";
           return;
         }
 
-        fullPrompt += `, ${promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ${promptsBasic.levels[levelBtn.dataset.level]}, tạo ${num} câu hỏi.`;
-      } else {
-        fullPrompt += `, ${promptsAdvanced.format}\n`;
+        // 🔹 Ghép prompt từ file tương ứng
+        const typePrompt = promptsBasic.types[typeBtn.dataset.type];
+        const semesterPrompt = promptsBasic.semesters[semesterBtn.dataset.semester];
+        const levelPrompt = promptsBasic.levels[levelBtn.dataset.level];
+
+        fullPrompt = `${typePrompt} ${semesterPrompt} ${levelPrompt}. Tạo ${num} câu hỏi phù hợp.`;
+      } 
+      else {
+        // 🟠 Chế độ nâng cao giữ nguyên
+        fullPrompt += `${promptsAdvanced.format}\n`;
 
         const tn = {
           nb: document.getElementById("tn_nb").value,
@@ -397,11 +407,13 @@
         }
       }
 
+      // ===== GỬI LÊN SERVER =====
       const res = await fetch("/generate", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ mode, prompt: fullPrompt })
       });
+
       const data = await res.json();
       document.getElementById("result").innerText = data.result;
     });
