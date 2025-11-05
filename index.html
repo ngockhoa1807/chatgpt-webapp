@@ -284,15 +284,17 @@
         return;
       }
 
-      // Gửi prompt kèm số lượng câu hỏi người dùng nhập
+      // 🔹 Đọc prompt gốc từ file bên ngoài (ví dụ: /prompts/prompt.txt)
+      const promptFile = await fetch("/prompts/prompt.txt");
+      const basePrompt = await promptFile.text();
+
+      // 🔹 Ghép prompt từ file với thông tin người dùng chọn
       const fullPrompt = `
-      Tạo bài tập xác suất thống kê trung học cơ sở, chương trình GDPT 2018,
-      ${typeBtn.dataset.type === "tracnghiem" ? "tạo bài tập trắc nghiệm 4 lựa chọn"},
-      ${semesterBtn.dataset.semester === "hki" ? "Kiến thức học kỳ 1 lớp 9" :},
-      ${typeBtn.dataset.type === "tuluan" ? "tạo bài tập tự luận"},
-      ${semesterBtn.dataset.semester === "hkii" ? "Kiến thức học kỳ 2 lớp 9" :},
-      mức độ ${levelBtn.innerText.toLowerCase()},
-      với số lượng ${num} câu hỏi.
+      ${basePrompt}
+      Loại bài tập: ${typeBtn.innerText}
+      Học kỳ: ${semesterBtn.innerText}
+      Mức độ: ${levelBtn.innerText}
+      Số lượng câu hỏi: ${num}.
       `;
 
       document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
@@ -308,6 +310,7 @@
     });
   </script>
 </div>
+
       <!-- ===== NÂNG CAO ===== -->
       <div id="advancedMode" style="display:none;">
         <div class="section">
