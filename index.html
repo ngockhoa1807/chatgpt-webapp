@@ -12,6 +12,7 @@
       padding: 0;
       color: #333;
     }
+
     .container {
       display: flex;
       flex-wrap: wrap;
@@ -23,7 +24,7 @@
       overflow: hidden;
     }
 
-    /* ===== CỘT TRÁI ===== */
+    /* ===== PANEL TRÁI ===== */
     .left-panel {
       flex: 1;
       min-width: 350px;
@@ -43,6 +44,7 @@
       text-align: center;
       margin-bottom: 20px;
     }
+
     .mode-toggle button {
       padding: 10px 20px;
       border: none;
@@ -53,6 +55,7 @@
       font-size: 15px;
       transition: all 0.2s;
     }
+
     .mode-toggle button.active {
       background: #c62828;
       color: #fff;
@@ -131,7 +134,7 @@
       background: #b71c1c;
     }
 
-    /* ===== CỘT PHẢI ===== */
+    /* ===== PANEL PHẢI ===== */
     .right-panel {
       flex: 2;
       min-width: 400px;
@@ -156,6 +159,63 @@
       line-height: 1.6;
     }
 
+    /* ===== PHẦN NÂNG CAO ===== */
+    .box {
+      background: #fafafa;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 15px 20px;
+      margin-top: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .box h4 {
+      margin-top: 0;
+      margin-bottom: 15px;
+      color: #c62828;
+      font-weight: 600;
+      border-bottom: 2px solid #eee;
+      padding-bottom: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .level-table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    .level-table th {
+      background: #f2f2f2;
+      color: #333;
+      font-weight: 500;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+    }
+
+    .level-table td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+
+    .level-table input[type="number"] {
+      width: 80px;
+      padding: 6px;
+      font-size: 14px;
+      text-align: center;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+
+    .level-table input[type="number"]:focus {
+      border-color: #c62828;
+      outline: none;
+      box-shadow: 0 0 3px rgba(198,40,40,0.3);
+    }
+
     @media (max-width: 900px) {
       .container {
         flex-direction: column;
@@ -167,6 +227,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <!-- BÊN TRÁI -->
@@ -178,7 +239,7 @@
         <button id="advancedModeBtn">Nâng cao</button>
       </div>
 
-      <!-- =============== CƠ BẢN =============== -->
+      <!-- ===== CƠ BẢN ===== -->
       <div id="basicMode">
         <div class="section">
           <h3>Loại bài tập</h3>
@@ -207,65 +268,49 @@
         </div>
 
         <div class="section input-group">
-          <label>Nhập số lượng câu hỏi: </label>
+          <label>Nhập số lượng câu hỏi:</label>
           <input type="number" id="numQuestions" value="1" min="1">
         </div>
       </div>
 
-      <!-- =============== NÂNG CAO =============== -->
-      <!-- =============== NÂNG CAO =============== -->
-<div id="advancedMode" style="display:none;">
-  <div class="section">
-    <h3>Phần Xác suất & Thống kê</h3>
+      <!-- ===== NÂNG CAO ===== -->
+      <div id="advancedMode" style="display:none;">
+        <div class="section">
+          <h3>Phần Xác suất & Thống kê</h3>
 
-    <!-- TRẮC NGHIỆM -->
-    <div class="box">
-      <h4>Trắc nghiệm</h4>
-      <div class="grid-2">
-        <div>
-          <label>Nhận biết:</label>
-          <input type="number" id="tn_nb" value="0" min="0">
-        </div>
-        <div>
-          <label>Thông hiểu:</label>
-          <input type="number" id="tn_th" value="0" min="0">
-        </div>
-        <div>
-          <label>Vận dụng:</label>
-          <input type="number" id="tn_vd" value="0" min="0">
-        </div>
-        <div>
-          <label>Vận dụng cao:</label>
-          <input type="number" id="tn_vdc" value="0" min="0">
+          <div class="box">
+            <h4>Trắc nghiệm</h4>
+            <table class="level-table">
+              <tr><th>Nhận biết</th><th>Thông hiểu</th></tr>
+              <tr>
+                <td><input type="number" id="tn_nb" value="0" min="0"></td>
+                <td><input type="number" id="tn_th" value="0" min="0"></td>
+              </tr>
+              <tr><th>Vận dụng</th><th>Vận dụng cao</th></tr>
+              <tr>
+                <td><input type="number" id="tn_vd" value="0" min="0"></td>
+                <td><input type="number" id="tn_vdc" value="0" min="0"></td>
+              </tr>
+            </table>
+          </div>
+
+          <div class="box">
+            <h4>Tự luận</h4>
+            <table class="level-table">
+              <tr><th>Nhận biết</th><th>Thông hiểu</th></tr>
+              <tr>
+                <td><input type="number" id="tl_nb" value="0" min="0"></td>
+                <td><input type="number" id="tl_th" value="0" min="0"></td>
+              </tr>
+              <tr><th>Vận dụng</th><th>Vận dụng cao</th></tr>
+              <tr>
+                <td><input type="number" id="tl_vd" value="0" min="0"></td>
+                <td><input type="number" id="tl_vdc" value="0" min="0"></td>
+              </tr>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
-
-    <!-- TỰ LUẬN -->
-    <div class="box">
-      <h4>Tự luận</h4>
-      <div class="grid-2">
-        <div>
-          <label>Nhận biết:</label>
-          <input type="number" id="tl_nb" value="0" min="0">
-        </div>
-        <div>
-          <label>Thông hiểu:</label>
-          <input type="number" id="tl_th" value="0" min="0">
-        </div>
-        <div>
-          <label>Vận dụng:</label>
-          <input type="number" id="tl_vd" value="0" min="0">
-        </div>
-        <div>
-          <label>Vận dụng cao:</label>
-          <input type="number" id="tl_vdc" value="0" min="0">
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 
       <button id="generateBtn">Tạo bài tập</button>
     </div>
@@ -279,6 +324,7 @@
 
   <script type="module">
     import { basePrompt, promptsBasic, promptsAdvanced } from './prompts.js';
+
     const basicModeBtn = document.getElementById("basicModeBtn");
     const advancedModeBtn = document.getElementById("advancedModeBtn");
     const basicMode = document.getElementById("basicMode");
