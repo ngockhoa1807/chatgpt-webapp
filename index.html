@@ -241,75 +241,37 @@
 
       <!-- ===== CƠ BẢN ===== -->
       <div id="basicMode">
-  <div class="section">
-    <h3>Loại bài tập</h3>
-    <div id="typeGroup" class="btn-group">
-      <button class="btn" data-type="tracnghiem">BT Trắc nghiệm</button>
-      <button class="btn" data-type="tuluan">BT Tự luận</button>
-    </div>
-  </div>
+        <div class="section">
+          <h3>Loại bài tập</h3>
+          <div id="typeGroup" class="btn-group">
+            <button class="btn" data-type="tracnghiem">BT Trắc nghiệm</button>
+            <button class="btn" data-type="tuluan">BT Tự luận</button>
+          </div>
+        </div>
 
-  <div class="section">
-    <h3>Học kỳ</h3>
-    <div id="semesterGroup" class="btn-group">
-      <button class="btn" data-semester="hki">HKI</button>
-      <button class="btn" data-semester="hkii">HKII</button>
-    </div>
-  </div>
+        <div class="section">
+          <h3>Học kỳ</h3>
+          <div id="semesterGroup" class="btn-group">
+            <button class="btn" data-semester="hki">HKI</button>
+            <button class="btn" data-semester="hkii">HKII</button>
+          </div>
+        </div>
 
-  <div class="section">
-    <h3>Mức độ</h3>
-    <div id="levelGroup" class="btn-group">
-      <button class="btn" data-level="nhanbiet">Nhận biết</button>
-      <button class="btn" data-level="thonghieu">Thông hiểu</button>
-      <button class="btn" data-level="vandung">Vận dụng</button>
-      <button class="btn" data-level="vandungcao">Vận dụng cao</button>
-    </div>
-  </div>
+        <div class="section">
+          <h3>Mức độ</h3>
+          <div id="levelGroup" class="btn-group">
+            <button class="btn" data-level="nhanbiet">Nhận biết</button>
+            <button class="btn" data-level="thonghieu">Thông hiểu</button>
+            <button class="btn" data-level="vandung">Vận dụng</button>
+            <button class="btn" data-level="vandungcao">Vận dụng cao</button>
+          </div>
+        </div>
 
-  <div class="section input-group">
-    <label>Nhập số lượng câu hỏi:</label>
-    <input type="number" id="numQuestions" value="1" min="1">
-  </div>
-
-  <!-- Sử dụng ES Module để import prompt từ file prompt.ts -->
-  <script type="module">
-    import { basePrompt } from './prompt.ts';
-
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const typeBtn = document.querySelector("#typeGroup .active");
-      const semesterBtn = document.querySelector("#semesterGroup .active");
-      const levelBtn = document.querySelector("#levelGroup .active");
-      const num = document.getElementById("numQuestions").value;
-
-      if (!typeBtn || !semesterBtn || !levelBtn || num <= 0) {
-        alert("Vui lòng chọn đầy đủ thông tin và nhập số lượng hợp lệ!");
-        return;
-      }
-
-      // Ghép prompt từ file prompt.ts với thông tin người dùng chọn
-      const fullPrompt = `
-      ${basePrompt}
-      Loại bài tập: ${typeBtn.innerText}
-      Học kỳ: ${semesterBtn.innerText}
-      Mức độ: ${levelBtn.innerText}
-      Số lượng câu hỏi: ${num}.
-      `;
-
-      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
-
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode: "basic", prompt: fullPrompt })
-      });
-
-      const data = await res.json();
-      document.getElementById("result").innerText = data.result;
-    });
-  </script>
-</div>
-
+        <div class="section input-group">
+          <label>Nhập số lượng câu hỏi:</label>
+          <input type="number" id="numQuestions" value="1" min="1">
+        </div>
+      </div>
 
       <!-- ===== NÂNG CAO ===== -->
       <div id="advancedMode" style="display:none;">
