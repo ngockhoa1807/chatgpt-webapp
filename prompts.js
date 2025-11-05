@@ -18,10 +18,7 @@ export const promptsBasic = {
 };
 
 export const promptsAdvanced = {
-  format: `Trình bày kết quả theo mẫu:
-I. TRẮC NGHIỆM
-II. TỰ LUẬN
-*Đáp án, hướng dẫn làm bài`,
+  
   tracnghiem:
     "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
   tuluan:
