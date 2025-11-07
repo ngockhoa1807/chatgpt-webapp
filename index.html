@@ -325,108 +325,149 @@
     </div>
   </div>
 
-  <script>
-    /* ---------------------- PROMPT DATA ---------------------- */
-    const promptsBasic = {
-      types: {
-        tracnghiem: "Tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất - thống kê theo chương trình THCS GDPT 2018",
-        tuluan: "Tạo bài tập tự luận, nội dung xác suất - thống kê theo chương trình THCS GDPT 2018"
-      },
-      semesters: {
-        hki: "Kiến thức học kỳ I: tần số, bảng phân bố, biểu đồ, trung bình cộng, số trung vị, mốt...",
-        hkii: "Kiến thức học kỳ II: xác suất, biến cố, không gian mẫu, công thức xác suất..."
-      },
-      levels: {
-        nhanbiet: "mức độ nhận biết",
-        thonghieu: "mức độ thông hiểu",
-        vandung: "mức độ vận dụng",
-        vandungcao: "mức độ vận dụng cao"
-      }
-    };
+ <script>
+  /* ---------------------- PROMPT DATA ---------------------- */
+  const promptsBasic = {
+    types: {
+      tracnghiem: "Tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất - thống kê theo chương trình THCS GDPT 2018",
+      tuluan: "Tạo bài tập tự luận, nội dung xác suất - thống kê theo chương trình THCS GDPT 2018"
+    },
+    semesters: {
+      hki: "Kiến thức học kỳ I: tần số, bảng phân bố, biểu đồ, trung bình cộng, số trung vị, mốt...",
+      hkii: "Kiến thức học kỳ II: xác suất, biến cố, không gian mẫu, công thức xác suất..."
+    },
+    levels: {
+      nhanbiet: "mức độ nhận biết",
+      thonghieu: "mức độ thông hiểu",
+      vandung: "mức độ vận dụng",
+      vandungcao: "mức độ vận dụng cao"
+    }
+  };
 
-    const promptsAdvanced = {
-      format: "Tạo bộ đề tổng hợp theo ma trận:",
-      tracnghiem: "dạng trắc nghiệm 4 lựa chọn",
-      tuluan: "dạng tự luận có lời giải chi tiết"
-    };
-    /* --------------------------------------------------------- */
+  const promptsAdvanced = {
+    format: "Tạo bộ đề tổng hợp theo ma trận:",
+    tracnghiem: "dạng trắc nghiệm 4 lựa chọn",
+    tuluan: "dạng tự luận có lời giải chi tiết"
+  };
+  /* --------------------------------------------------------- */
 
-    const promptDisplay = document.getElementById("promptDisplay");
-    const basicModeBtn = document.getElementById("basicModeBtn");
-    const advancedModeBtn = document.getElementById("advancedModeBtn");
-    const basicMode = document.getElementById("basicMode");
-    const advancedMode = document.getElementById("advancedMode");
+  const promptDisplay = document.getElementById("promptDisplay");
+  const basicModeBtn = document.getElementById("basicModeBtn");
+  const advancedModeBtn = document.getElementById("advancedModeBtn");
+  const basicMode = document.getElementById("basicMode");
+  const advancedMode = document.getElementById("advancedMode");
 
-    basicModeBtn.addEventListener("click", () => {
+  // 🚫 Mặc định: cả hai nút đều không active, hai khối đều ẩn
+  basicModeBtn.classList.remove("active");
+  advancedModeBtn.classList.remove("active");
+  basicMode.style.display = "none";
+  advancedMode.style.display = "none";
+  promptDisplay.innerText = "🔍 Hãy chọn chế độ 'Cơ bản' hoặc 'Nâng cao' để bắt đầu.";
+
+  // Khi nhấn nút “Cơ bản”
+  basicModeBtn.addEventListener("click", () => {
+    const isActive = basicModeBtn.classList.contains("active");
+    // Nếu đang bật thì tắt đi
+    if (isActive) {
+      basicModeBtn.classList.remove("active");
+      basicMode.style.display = "none";
+      promptDisplay.innerText = "🔍 Hãy chọn chế độ 'Cơ bản' hoặc 'Nâng cao' để bắt đầu.";
+    } else {
       basicModeBtn.classList.add("active");
       advancedModeBtn.classList.remove("active");
       basicMode.style.display = "block";
       advancedMode.style.display = "none";
       updatePromptPreview();
-    });
+    }
+  });
 
-    advancedModeBtn.addEventListener("click", () => {
+  // Khi nhấn nút “Nâng cao”
+  advancedModeBtn.addEventListener("click", () => {
+    const isActive = advancedModeBtn.classList.contains("active");
+    if (isActive) {
+      advancedModeBtn.classList.remove("active");
+      advancedMode.style.display = "none";
+      promptDisplay.innerText = "🔍 Hãy chọn chế độ 'Cơ bản' hoặc 'Nâng cao' để bắt đầu.";
+    } else {
       advancedModeBtn.classList.add("active");
       basicModeBtn.classList.remove("active");
-      basicMode.style.display = "none";
       advancedMode.style.display = "block";
+      basicMode.style.display = "none";
       updatePromptPreview();
-    });
+    }
+  });
 
-    document.querySelectorAll(".btn-group").forEach(group => {
-      group.addEventListener("click", e => {
-        if (e.target.classList.contains("btn")) {
-          group.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
-          e.target.classList.add("active");
-          updatePromptPreview();
-        }
-      });
-    });
-
-    document.querySelectorAll("input").forEach(input => {
-      input.addEventListener("input", updatePromptPreview);
-    });
-
-    function updatePromptPreview() {
-      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
-      let preview = "";
-
-      if (mode === "basic") {
-        const typeBtn = document.querySelector("#typeGroup .active");
-        const semesterBtn = document.querySelector("#semesterGroup .active");
-        const levelBtn = document.querySelector("#levelGroup .active");
-        const num = document.getElementById("numQuestions").value;
-
-        if (typeBtn && semesterBtn && levelBtn) {
-          preview = `$tạo ${num} câu hỏi,{promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ${promptsBasic.levels[levelBtn.dataset.level]}.`;
-        } else {
-          preview = "⚠️ Vui lòng chọn đủ thông tin để hiển thị prompt.";
-        }
-      } else {
-        preview = promptsAdvanced.format + "\n";
-        const tn = ["nb", "th", "vd", "vdc"].map(k => ({ k, v: document.getElementById(`tn_${k}`).value }));
-        const tl = ["nb", "th", "vd", "vdc"].map(k => ({ k, v: document.getElementById(`tl_${k}`).value }));
-        tn.forEach(({ k, v }) => { if (v > 0) preview += `Tạo ${v} câu trắc nghiệm (${promptsBasic.levels[k] || k}) - ${promptsAdvanced.tracnghiem}\n`; });
-        tl.forEach(({ k, v }) => { if (v > 0) preview += `Tạo ${v} câu tự luận (${promptsBasic.levels[k] || k}) - ${promptsAdvanced.tuluan}\n`; });
+  // Xử lý chọn nút nhóm trong từng phần
+  document.querySelectorAll(".btn-group").forEach(group => {
+    group.addEventListener("click", e => {
+      if (e.target.classList.contains("btn")) {
+        group.querySelectorAll(".btn").forEach(b => b.classList.remove("active"));
+        e.target.classList.add("active");
+        updatePromptPreview();
       }
+    });
+  });
 
-      promptDisplay.innerText = preview.trim() || "🔍 Prompt hiện tại sẽ hiển thị ở đây...";
+  document.querySelectorAll("input").forEach(input => {
+    input.addEventListener("input", updatePromptPreview);
+  });
+
+  // Cập nhật nội dung hiển thị prompt
+  function updatePromptPreview() {
+    const mode =
+      basicMode.style.display === "block"
+        ? "basic"
+        : advancedMode.style.display === "block"
+        ? "advanced"
+        : "none";
+    let preview = "";
+
+    if (mode === "basic") {
+      const typeBtn = document.querySelector("#typeGroup .active");
+      const semesterBtn = document.querySelector("#semesterGroup .active");
+      const levelBtn = document.querySelector("#levelGroup .active");
+      const num = document.getElementById("numQuestions").value;
+
+      if (typeBtn && semesterBtn && levelBtn) {
+        preview = `Tạo ${num} câu hỏi, ${promptsBasic.types[typeBtn.dataset.type]}, ${promptsBasic.semesters[semesterBtn.dataset.semester]}, ở ${promptsBasic.levels[levelBtn.dataset.level]}.`;
+      } else {
+        preview = "⚠️ Vui lòng chọn đủ thông tin để hiển thị prompt.";
+      }
+    } else if (mode === "advanced") {
+      preview = promptsAdvanced.format + "\n";
+      const tn = ["nb", "th", "vd", "vdc"].map(k => ({ k, v: document.getElementById(`tn_${k}`).value }));
+      const tl = ["nb", "th", "vd", "vdc"].map(k => ({ k, v: document.getElementById(`tl_${k}`).value }));
+      tn.forEach(({ k, v }) => { if (v > 0) preview += `Tạo ${v} câu trắc nghiệm (${promptsBasic.levels[k] || k}) - ${promptsAdvanced.tracnghiem}\n`; });
+      tl.forEach(({ k, v }) => { if (v > 0) preview += `Tạo ${v} câu tự luận (${promptsBasic.levels[k] || k}) - ${promptsAdvanced.tuluan}\n`; });
+    } else {
+      preview = "🔍 Hãy chọn chế độ 'Cơ bản' hoặc 'Nâng cao' để bắt đầu.";
     }
 
-    document.getElementById("generateBtn").addEventListener("click", async () => {
-      const mode = basicMode.style.display === "block" ? "basic" : "advanced";
-      document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
-      const fullPrompt = promptDisplay.innerText;
-      const res = await fetch("/generate", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, prompt: fullPrompt })
-      });
-      const data = await res.json();
-      document.getElementById("result").innerText = data.result;
-    });
+    promptDisplay.innerText = preview.trim();
+  }
 
-    updatePromptPreview();
-  </script>
-</body>
-</html>
+  // Khi nhấn nút “Tạo bài tập”
+  document.getElementById("generateBtn").addEventListener("click", async () => {
+    const mode =
+      basicMode.style.display === "block"
+        ? "basic"
+        : advancedMode.style.display === "block"
+        ? "advanced"
+        : "none";
+
+    if (mode === "none") {
+      alert("⚠️ Vui lòng chọn chế độ 'Cơ bản' hoặc 'Nâng cao' trước khi tạo bài tập.");
+      return;
+    }
+
+    document.getElementById("result").innerText = "⏳ Đang tạo bài tập...";
+    const fullPrompt = promptDisplay.innerText;
+    const res = await fetch("/generate", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ mode, prompt: fullPrompt })
+    });
+    const data = await res.json();
+    document.getElementById("result").innerText = data.result;
+  });
+</script>
