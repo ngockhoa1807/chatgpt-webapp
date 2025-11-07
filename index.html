@@ -335,8 +335,9 @@
   </div>
 
   <script type="module">
-    import { promptsBasic, promptsAdvanced } from "./prompts.js";
+  import { promptsBasic, promptsAdvanced } from "./prompts.js";
 
+  document.addEventListener("DOMContentLoaded", () => {
     const promptDisplay = document.getElementById("promptDisplay");
     const basicModeBtn = document.getElementById("basicModeBtn");
     const advancedModeBtn = document.getElementById("advancedModeBtn");
@@ -378,6 +379,12 @@
 
     // ===== HÀM CẬP NHẬT PROMPT HIỂN THỊ =====
     function updatePromptPreview() {
+      // Nếu promptsBasic chưa load thì đợi
+      if (!promptsBasic || !promptsAdvanced) {
+        promptDisplay.innerText = "⏳ Đang tải dữ liệu prompt...";
+        return;
+      }
+
       const mode = basicMode.style.display === "block" ? "basic" : "advanced";
       let preview = "";
 
@@ -432,8 +439,10 @@
       document.getElementById("result").innerText = data.result;
     });
 
-    // Khởi tạo prompt ban đầu
-    updatePromptPreview();
-  </script>
+    // 🚀 Chỉ khởi tạo khi DOM và prompts đã sẵn sàng
+    setTimeout(updatePromptPreview, 100);
+  });
+</script>
+
 </body>
 </html>
