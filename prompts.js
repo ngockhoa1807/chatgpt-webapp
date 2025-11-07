@@ -20,7 +20,7 @@ export const promptsBasic = {
 export const promptsAdvanced = {
   
   tracnghiem:
-    "tạo bài tập trắc nghiệm 4 lựa chọn, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ",
-  tuluan:
-    "tạo bài tập tự luận, nội dung xác suất thống kê lớp 9 sách chân trời sáng tạo, câu hỏi rõ ràng, nội dung đầy đủ kèm hướng dẫn và đáp án"
+  format: "Tạo đề kiểm tra tổng hợp phần Xác suất và Thống kê:",
+  tracnghiem: "dạng trắc nghiệm 4 lựa chọn",
+  tuluan: "dạng tự luận có lời giải chi tiết",
 };
